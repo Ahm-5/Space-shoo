@@ -1,0 +1,125 @@
+import pygame
+import random
+
+# Initialize pygame
+pygame.init()
+
+# Set up the display
+WIDTH, HEIGHT = 800, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Asteroid Shooter")
+
+# Define colors
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+
+# Player class
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("spaceship.png")
+        self.rect = self.image.get_rect()
+        self.rect.centerx = WIDTH // 2
+        self.rect.bottom = HEIGHT - 10
+        self.speed_x = 0
+
+    def update(self):
+        self.rect.x += self.speed_x
+        if self.rect.right > WIDTH:
+            self.rect.right = WIDTH
+        if self.rect.left < 0:
+            self.rect.left = 0
+
+    def shoot(self):
+        bullet = Bullet(self.rect.centerx, self.rect.top)
+        all_sprites.add(bullet)
+        bullets.add(bullet)
+
+# Bullet class
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.image = pygame.Surface((5, 10))
+        self.image.fill(WHITE)
+        self.rect = self.image.get_rect()
+        self.rect.centerx = x
+        self.rect.bottom = y
+        self.speed_y = -10
+
+    def update(self):
+        self.rect.y += self.speed_y
+        if self.rect.bottom < 0:
+            self.kill()
+
+# Asteroid class
+class Asteroid(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = pygame.image.load("asteroid.png")
+        self.rect = self.image.get_rect()
+        self.rect.x = random.randint(0, WIDTH - self.rect.width)
+        self.rect.y = random.randint(-100, -40)
+        self.speed_y = random.randint(1, 4)
+
+    def update(self):
+        self.rect.y += self.speed_y
+        if self.rect.top > HEIGHT:
+            self.rect.x = random.randint(0, WIDTH - self.rect.width)
+            self.rect.y = random.randint(-100, -40)
+            self.speed_y = random.randint(1, 4)
+
+# Create sprite groups
+all_sprites = pygame.sprite.Group()
+asteroids = pygame.sprite.Group()
+bullets = pygame.sprite.Group()
+
+# Create player object
+player = Player()
+all_sprites.add(player)
+
+# Create asteroids
+for _ in range(8):
+    asteroid = Asteroid()
+    all_sprites.add(asteroid)
+    asteroids.add(asteroid)
+
+# Set up the game clock
+clock = pygame.time.Clock()
+
+# Game loop
+running = True
+while running:
+    # Process events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                player.shoot()
+
+    # Update
+    all_sprites.update()
+
+    # Check for collisions
+    hits = pygame.sprite.groupcollide(asteroids, bullets, True, True)
+    for hit in hits:
+        asteroid = Asteroid()
+        all_sprites.add(asteroid)
+        asteroids.add(asteroid)
+
+    hits = pygame.sprite.spritecollide(player, asteroids, False)
+    if hits:
+        running = False
+
+    # Render
+    screen.fill(BLACK)
+    all_sprites.draw(screen)
+
+    # Flip the display
+    pygame.display.flip()
+
+    # Control the game speed
+    clock.tick(60)
+
+# Quit the game
+pygame.quit()

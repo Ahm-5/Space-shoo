@@ -1,0 +1,150 @@
++----------------------------------------+
+|                  Game                  |
++----------------------------------------+
+| - win: pygame.Surface                   |
+| - clock: pygame.time.Clock              |
+| - gameover: bool                        |
+| - lives: int                            |
+| - score: int                            |
+| - highscore: int                        |
+| - rapidfire: bool                       |
+| - rfstart: int                          |
+| - issoundon: bool                       |
+| - player1: player                       |
+| - playerbullets: list[bullet]           |
+| - asteroids: list[asteroid]             |
+| - count: int                            |
+| - stars: list[star]                     |
+| - extralives: list[powerlive]           |
+| - blast_powerups: list[blastpowerup]    |
+| - score_multiplier_powerups: list[score_multiplier_powerup]
++----------------------------------------+
+| + save_player_data(filename: str): void |
+| + load_player_data(filename: str): void |
+| + redrawGameWindow(): void              |
++----------------------------------------+
+
+        ^
+        |
+        |
+        |
+        |
+        v
+
++-----------------------+          +------------------------+
+|         player        |          |        bullet          |
++-----------------------+          +------------------------+
+| - image: pygame.Surface|          | - point: tuple          |
+| - w: int              |          | - x: int                |
+| - h: int              |          | - y: int                |
+| - x: int              |          | - w: int                |
+| - y: int              |          | - h: int                |
+| - angle: int          |          | - c: float              |
+| - rotatedSurf: pygame.Surface |  | - s: float              |
+| - rotatedRect: pygame.Rect    |  | - xv: float             |
+| - cosine: float       |          | - yv: float             |
+| - sine: float         |          |                          |
+| - head: tuple         |          |                          |
++-----------------------+          +------------------------+
+| + draw(win: pygame.Surface): void|+ move(): void           |
+| + turnleft(): void    |          | + draw(win: pygame.Surface): void |
+| + turnright(): void   |          | + checkoffscreen(): void |
+| + moveforward(): void |          |                          |
+| + updatelocation(): void|         |                          |
++-----------------------+          +------------------------+
+
+        ^
+        |
+        |
+        |
+        |
+        v
+
++----------------------------+     +----------------------------+
+|         asteroid           |     |            star            |
++----------------------------+     +----------------------------+
+| - image: pygame.Surface    |     | - image: pygame.Surface    |
+| - w: int                   |     | - w: int                   |
+| - h: int                   |     | - h: int                   |
+| - ranPoint: tuple          |     | - ranPoint: tuple          |
+| - x: int                   |     | - x: int                   |
+| - y: int                   |     | - y: int                   |
+| - xdir: int                |     | - xdir: int                |
+| - ydir: int                |     | - ydir: int                |
+| - xv: int                  |     | - xv: int                  |
+| - yv: int                  |     | - yv: int                  |
++----------------------------+     +----------------------------+
+| + draw(win: pygame.Surface): void|+ draw(win: pygame.Surface): void |
++----------------------------+     +----------------------------+
+
+        ^
+        |
+        |
+        |
+        |
+        v
+
++---------------------------------------+
+|          powerlive                     |
++---------------------------------------+
+| - image: pygame.Surface                |
+| - w: int                              |
+| - h: int                              |
+| - ranPoint: tuple                     |
+| - x: int                              |
+| - y: int                              |
+| - xdir: int                           |
+| - ydir: int                           |
+| - xv: int                             |
+| - yv: int                             |
++---------------------------------------+
+| + draw(win: pygame.Surface): void     |
++---------------------------------------+
+
+        ^
+        |
+        |
+        |
+        |
+        v
+
++----------------------------------------+
+|         blastpowerup                    |
++----------------------------------------+
+| - image: pygame.Surface                 |
+| - w: int                               |
+| - h: int                               |
+| - ranPoint: tuple                      |
+| - x: int                               |
+| - y: int                               |
+| - xdir: int                            |
+| - ydir: int                            |
+| - xv: int                              |
+| - yv: int                              |
++----------------------------------------+
+| + draw(win: pygame.Surface): void      |
++----------------------------------------+
+
+        ^
+        |
+        |
+        |
+        |
+        v
+
++----------------------------------------+
+| score_multiplier_powerup                |
++----------------------------------------+
+| - image: pygame.Surface                 |
+| - w: int                               |
+| - h: int                               |
+| - ranPoint: tuple                      |
+| - x: int                               |
+| - y: int                               |
+| - xdir: int                            |
+| - ydir: int                            |
+| - xv: int                              |
+| - yv: int                              |
++----------------------------------------+
+| + draw(win: pygame.Surface): void      |
++----------------------------------------+
